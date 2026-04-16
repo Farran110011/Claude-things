@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1584px;
+    height: 396px;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  .banner {
+    width: 1584px;
+    height: 396px;
+    position: relative;
+    background: #020817;
+    overflow: hidden;
+  }
+
+  /* Deep space gradient base */
+  .bg-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 20% 80%, rgba(139, 92, 246, 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 50% at 85% 20%, rgba(59, 130, 246, 0.07) 0%, transparent 50%),
+      linear-gradient(135deg, #020817 0%, #0a1628 40%, #050d1a 100%);
+  }
+
+  /* Neural network SVG */
+  .neural-net {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 780px;
+    height: 396px;
+    opacity: 0.35;
+  }
+
+  /* Scan line overlay */
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 255, 0.015) 2px,
+      rgba(0, 255, 255, 0.015) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* Glowing orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+  }
+  .orb-1 {
+    width: 300px; height: 300px;
+    background: rgba(6, 182, 212, 0.18);
+    top: -80px; right: 350px;
+  }
+  .orb-2 {
+    width: 250px; height: 250px;
+    background: rgba(139, 92, 246, 0.2);
+    bottom: -60px; right: 180px;
+  }
+  .orb-3 {
+    width: 200px; height: 200px;
+    background: rgba(59, 130, 246, 0.12);
+    top: 50px; left: 350px;
+  }
+
+  /* Glass card */
+  .glass-card {
+    position: absolute;
+    left: 64px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 580px;
+    padding: 36px 44px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 16px;
+    box-shadow:
+      0 0 0 1px rgba(6, 182, 212, 0.08),
+      inset 0 1px 0 rgba(255,255,255,0.07),
+      0 20px 60px rgba(0,0,0,0.5),
+      0 0 40px rgba(6, 182, 212, 0.06);
+  }
+
+  /* Logo mark */
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(6, 182, 212, 0.7);
+  }
+
+  /* Main headline */
+  .headline {
+    font-size: 46px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    color: #ffffff;
+    margin-bottom: 14px;
+    text-shadow: 0 0 40px rgba(6, 182, 212, 0.3);
+  }
+
+  .headline .neon {
+    background: linear-gradient(90deg, #22d3ee, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.5));
+  }
+
+  /* Tagline */
+  .tagline {
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(148, 163, 184, 0.9);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    margin-bottom: 26px;
+  }
+
+  /* CTA pill */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    border-radius: 100px;
+    color: #22d3ee;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+  }
+
+  .cta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 8px #22d3ee;
+  }
+
+  /* Stats row at bottom of card */
+  .stats {
+    position: absolute;
+    bottom: 0;
+    left: 64px;
+    right: 64px;
+    display: flex;
+    gap: 0;
+  }
+
+  /* Right side decorative elements */
+  .right-panel {
+    position: absolute;
+    right: 64px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .badge {
+    padding: 8px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 8px;
+    color: rgba(196, 181, 253, 0.8);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+  }
+
+  .badge.active {
+    border-color: rgba(6, 182, 212, 0.4);
+    color: rgba(103, 232, 249, 0.9);
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.12);
+  }
+
+  /* Horizontal neon line accent */
+  .neon-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(6,182,212,0.6) 30%, rgba(139,92,246,0.6) 70%, transparent 100%);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+  }
+
+  .neon-line-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(139,92,246,0.3) 50%, transparent 100%);
+  }
+</style>
+</head>
+<body>
+<div class="banner">
+  <div class="bg-gradient"></div>
+
+  <!-- Glowing orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Neural network SVG -->
+  <svg class="neural-net" viewBox="0 0 780 396" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Layer 1 nodes -->
+    <circle cx="120" cy="80" r="5" fill="#22d3ee" opacity="0.6"/>
+    <circle cx="120" cy="160" r="5" fill="#22d3ee" opacity="0.6"/>
+    <circle cx="120" cy="240" r="5" fill="#22d3ee" opacity="0.5"/>
+    <circle cx="120" cy="320" r="5" fill="#22d3ee" opacity="0.5"/>
+
+    <!-- Layer 2 nodes -->
+    <circle cx="260" cy="60" r="6" fill="#818cf8" opacity="0.7"/>
+    <circle cx="260" cy="140" r="6" fill="#818cf8" opacity="0.7"/>
+    <circle cx="260" cy="220" r="6" fill="#818cf8" opacity="0.7"/>
+    <circle cx="260" cy="300" r="6" fill="#818cf8" opacity="0.6"/>
+    <circle cx="260" cy="360" r="5" fill="#818cf8" opacity="0.5"/>
+
+    <!-- Layer 3 nodes (larger, central) -->
+    <circle cx="420" cy="100" r="8" fill="#22d3ee" opacity="0.8"/>
+    <circle cx="420" cy="200" r="10" fill="#22d3ee" opacity="0.9"/>
+    <circle cx="420" cy="300" r="8" fill="#22d3ee" opacity="0.8"/>
+
+    <!-- Glow on active nodes -->
+    <circle cx="420" cy="200" r="20" fill="#22d3ee" opacity="0.12"/>
+    <circle cx="420" cy="200" r="35" fill="#22d3ee" opacity="0.05"/>
+
+    <!-- Layer 4 nodes -->
+    <circle cx="570" cy="80" r="6" fill="#818cf8" opacity="0.7"/>
+    <circle cx="570" cy="180" r="7" fill="#818cf8" opacity="0.8"/>
+    <circle cx="570" cy="280" r="6" fill="#818cf8" opacity="0.7"/>
+    <circle cx="570" cy="360" r="5" fill="#818cf8" opacity="0.5"/>
+
+    <!-- Layer 5 nodes (output) -->
+    <circle cx="700" cy="130" r="7" fill="#22d3ee" opacity="0.7"/>
+    <circle cx="700" cy="260" r="7" fill="#22d3ee" opacity="0.7"/>
+
+    <!-- Connections L1→L2 -->
+    <line x1="120" y1="80" x2="260" y2="60" stroke="#22d3ee" stroke-width="0.5" opacity="0.25"/>
+    <line x1="120" y1="80" x2="260" y2="140" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+    <line x1="120" y1="80" x2="260" y2="220" stroke="#22d3ee" stroke-width="0.5" opacity="0.12"/>
+    <line x1="120" y1="160" x2="260" y2="60" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+    <line x1="120" y1="160" x2="260" y2="140" stroke="#22d3ee" stroke-width="0.8" opacity="0.35"/>
+    <line x1="120" y1="160" x2="260" y2="220" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+    <line x1="120" y1="160" x2="260" y2="300" stroke="#22d3ee" stroke-width="0.5" opacity="0.15"/>
+    <line x1="120" y1="240" x2="260" y2="140" stroke="#22d3ee" stroke-width="0.5" opacity="0.15"/>
+    <line x1="120" y1="240" x2="260" y2="220" stroke="#22d3ee" stroke-width="0.8" opacity="0.3"/>
+    <line x1="120" y1="240" x2="260" y2="300" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+    <line x1="120" y1="240" x2="260" y2="360" stroke="#22d3ee" stroke-width="0.5" opacity="0.12"/>
+    <line x1="120" y1="320" x2="260" y2="220" stroke="#22d3ee" stroke-width="0.5" opacity="0.12"/>
+    <line x1="120" y1="320" x2="260" y2="300" stroke="#22d3ee" stroke-width="0.5" opacity="0.25"/>
+    <line x1="120" y1="320" x2="260" y2="360" stroke="#22d3ee" stroke-width="0.8" opacity="0.3"/>
+
+    <!-- Connections L2→L3 -->
+    <line x1="260" y1="60" x2="420" y2="100" stroke="#818cf8" stroke-width="0.8" opacity="0.3"/>
+    <line x1="260" y1="60" x2="420" y2="200" stroke="#818cf8" stroke-width="0.5" opacity="0.15"/>
+    <line x1="260" y1="140" x2="420" y2="100" stroke="#818cf8" stroke-width="1" opacity="0.4"/>
+    <line x1="260" y1="140" x2="420" y2="200" stroke="#818cf8" stroke-width="1.2" opacity="0.5"/>
+    <line x1="260" y1="220" x2="420" y2="100" stroke="#818cf8" stroke-width="0.5" opacity="0.15"/>
+    <line x1="260" y1="220" x2="420" y2="200" stroke="#818cf8" stroke-width="1.5" opacity="0.6"/>
+    <line x1="260" y1="220" x2="420" y2="300" stroke="#818cf8" stroke-width="0.8" opacity="0.3"/>
+    <line x1="260" y1="300" x2="420" y2="200" stroke="#818cf8" stroke-width="1" opacity="0.4"/>
+    <line x1="260" y1="300" x2="420" y2="300" stroke="#818cf8" stroke-width="1.2" opacity="0.5"/>
+    <line x1="260" y1="360" x2="420" y2="300" stroke="#818cf8" stroke-width="0.8" opacity="0.3"/>
+
+    <!-- Connections L3→L4 (brightest) -->
+    <line x1="420" y1="100" x2="570" y2="80" stroke="#22d3ee" stroke-width="1.2" opacity="0.5"/>
+    <line x1="420" y1="100" x2="570" y2="180" stroke="#22d3ee" stroke-width="0.8" opacity="0.3"/>
+    <line x1="420" y1="200" x2="570" y2="80" stroke="#22d3ee" stroke-width="0.8" opacity="0.25"/>
+    <line x1="420" y1="200" x2="570" y2="180" stroke="#22d3ee" stroke-width="2" opacity="0.7"/>
+    <line x1="420" y1="200" x2="570" y2="280" stroke="#22d3ee" stroke-width="1.5" opacity="0.6"/>
+    <line x1="420" y1="200" x2="570" y2="360" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+    <line x1="420" y1="300" x2="570" y2="180" stroke="#22d3ee" stroke-width="0.8" opacity="0.3"/>
+    <line x1="420" y1="300" x2="570" y2="280" stroke="#22d3ee" stroke-width="1.2" opacity="0.5"/>
+    <line x1="420" y1="300" x2="570" y2="360" stroke="#22d3ee" stroke-width="0.8" opacity="0.35"/>
+
+    <!-- Connections L4→L5 -->
+    <line x1="570" y1="80" x2="700" y2="130" stroke="#818cf8" stroke-width="1" opacity="0.5"/>
+    <line x1="570" y1="80" x2="700" y2="260" stroke="#818cf8" stroke-width="0.5" opacity="0.2"/>
+    <line x1="570" y1="180" x2="700" y2="130" stroke="#818cf8" stroke-width="1.5" opacity="0.6"/>
+    <line x1="570" y1="180" x2="700" y2="260" stroke="#818cf8" stroke-width="1" opacity="0.45"/>
+    <line x1="570" y1="280" x2="700" y2="130" stroke="#818cf8" stroke-width="0.8" opacity="0.3"/>
+    <line x1="570" y1="280" x2="700" y2="260" stroke="#818cf8" stroke-width="1.5" opacity="0.6"/>
+    <line x1="570" y1="360" x2="700" y2="260" stroke="#818cf8" stroke-width="0.8" opacity="0.35"/>
+
+    <!-- Glow on key connections -->
+    <line x1="420" y1="200" x2="570" y2="180" stroke="#22d3ee" stroke-width="4" opacity="0.08"/>
+    <line x1="260" y1="220" x2="420" y2="200" stroke="#818cf8" stroke-width="3" opacity="0.1"/>
+  </svg>
+
+  <!-- Scanlines -->
+  <div class="scanlines"></div>
+
+  <!-- Glass card -->
+  <div class="glass-card">
+    <!-- Logo mark -->
+    <div class="logo-mark">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+        <!-- Hexagon outline -->
+        <path d="M20 3 L35 11.5 L35 28.5 L20 37 L5 28.5 L5 11.5 Z"
+              stroke="#22d3ee" stroke-width="1.5" fill="rgba(6,182,212,0.08)"
+              filter="url(#glow)"/>
+        <!-- Inner circuit mark -->
+        <circle cx="20" cy="20" r="4" fill="#22d3ee" opacity="0.9"/>
+        <circle cx="20" cy="20" r="7" stroke="#818cf8" stroke-width="1" fill="none" opacity="0.6"/>
+        <line x1="20" y1="13" x2="20" y2="9" stroke="#22d3ee" stroke-width="1.5" opacity="0.7"/>
+        <line x1="20" y1="27" x2="20" y2="31" stroke="#22d3ee" stroke-width="1.5" opacity="0.7"/>
+        <line x1="13" y1="20" x2="9" y2="20" stroke="#818cf8" stroke-width="1.5" opacity="0.7"/>
+        <line x1="27" y1="20" x2="31" y2="20" stroke="#818cf8" stroke-width="1.5" opacity="0.7"/>
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="1.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+      </svg>
+      <span class="logo-text">NeuralForge</span>
+    </div>
+
+    <!-- Headline -->
+    <div class="headline">
+      Build the <span class="neon">future</span>,<br>
+      one model at a time.
+    </div>
+
+    <!-- Tagline -->
+    <div class="tagline">
+      AI infrastructure for teams that ship fast and think bigger.
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <span class="cta-dot"></span>
+      Now in early access
+    </div>
+  </div>
+
+  <!-- Right panel badges -->
+  <div class="right-panel">
+    <div class="badge active">Production-Ready Models</div>
+    <div class="badge">Fine-tuning · Inference · APIs</div>
+    <div class="badge">99.9% Uptime SLA</div>
+  </div>
+
+  <!-- Neon border accents -->
+  <div class="neon-line"></div>
+  <div class="neon-line-top"></div>
+</div>
+</body>
+</html>
